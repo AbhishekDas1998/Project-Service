@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import com.spring.dto.Project;
+import com.spring.exception.ProjectNotFoundException;
 import com.spring.service.ProjectServiceClass;
 
 @RestController
