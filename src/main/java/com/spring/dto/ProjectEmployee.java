@@ -1,29 +1,36 @@
 package com.spring.dto;
 
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "Project")
-public class Project {
+@Table(name = "ProjectEmp")
+public class ProjectEmployee {
 
 	@Id
+	private int eId;
 	private int pId;
 	private String pName;
 
-	public Project() {
+	public ProjectEmployee() {
 
 	}
 
-	public Project(int pId, String pName) {
+	public ProjectEmployee(int eId, int pId, String pName) {
 		super();
+		this.eId = eId;
 		this.pId = pId;
 		this.pName = pName;
 	}
 
+	public int geteId() {
+		return eId;
+	}
 
+	public void seteId(int eId) {
+		this.eId = eId;
+	}
 
 	public int getpId() {
 		return pId;

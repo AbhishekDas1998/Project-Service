@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import com.spring.dto.Project;
+import com.spring.dto.ProjectEmployee;
 import com.spring.exception.ProjectNotFoundException;
 import com.spring.service.ProjectServiceClass;
 
@@ -43,7 +44,8 @@ public class ProjectController {
 	@GetMapping(path = "/getProject/{pId}")
 	public Project findOneProject(@PathVariable int pId) {
 		Project project = ser.findOneProject(pId);
-		if (project.getpId() == 0)
+		String p=Integer.toString(project.getpId());
+		if (p.isEmpty())
 			throw new ProjectNotFoundException("Project Not found with pId =" + pId);
 		else
 			return project;
@@ -53,7 +55,8 @@ public class ProjectController {
 	@DeleteMapping(path = "/deleteProject/{pId}")
 	public String deleteProject(@PathVariable int pId) {
 		Project project = ser.findOneProject(pId);
-		if (project.getpId() == 0) {
+		String p=Integer.toString(project.getpId());
+		if (p.isEmpty()) {
 			throw new ProjectNotFoundException("Project Not found with pId =" + pId);
 		} else {
 			ser.deleteProject(pId);
@@ -65,6 +68,25 @@ public class ProjectController {
 	public String updateProject(@RequestBody Project project) {
 		ser.updateProject(project);
 		return "Project updated with id " + project.getpId();
+	}
+	
+	@PostMapping(path = "/addProjectEmp")
+	public ResponseEntity<ProjectEmployee> addProjectEmployee(@Valid @RequestBody ProjectEmployee project) throws Exception {
+		ProjectEmployee savedProject = ser.saveProjEmp(project);
+		URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{pId}")
+				.buildAndExpand(savedProject.getpId()).toUri();
+		return ResponseEntity.created(location).build();
+	}
+	
+	@GetMapping(path = "/getProjectEmp/{eId}")
+	public ProjectEmployee findOneProjectEmployee(@PathVariable int eId) {
+		ProjectEmployee project = ser.findOneProjectEmployee(eId);
+		String p=Integer.toString(project.geteId());
+		if (p.isEmpty())
+			throw new ProjectNotFoundException("Employee with Project Not found with eId =" + eId);
+		else
+			return project;
+
 	}
 
 }
