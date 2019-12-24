@@ -7,8 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.spring.dto.Project;
-import com.spring.dto.ProjectEmployee;
-import com.spring.repository.ProjectEmployeeRepository;
+import com.spring.exception.ProjectNotFoundException;
 import com.spring.repository.ProjectRepository;
 
 @Service
@@ -16,12 +15,15 @@ public class ProjectServiceClass {
 
 	@Autowired
 	ProjectRepository repo;
-	
-	@Autowired
-	ProjectEmployeeRepository projrepo;
 
 	public List<Project> findAllProjects() {
-		return repo.findAll();
+		
+		List<Project> project= repo.findAll();
+		if(project.isEmpty())
+		{
+			throw new ProjectNotFoundException("Project not found");
+		}
+		return project;
 	}
 
 	public Project addProject(Project project) {
@@ -33,13 +35,20 @@ public class ProjectServiceClass {
 		if (projectOptional.isPresent()) {
 			return projectOptional.get();
 		} else {
-			return new Project();
+			throw new ProjectNotFoundException("Project Not found with id= "+pId);
 		}
 	}
 
 	public void deleteProject(int pId) {
 
+		Optional<Project> projectOptional = repo.findById(pId);
+		if (projectOptional.isPresent()) {
 		repo.deleteById(pId);
+		}
+		else {
+			throw new ProjectNotFoundException("Project Not found with id= "+pId);
+		}
+		
 	}
 
 	public Project updateProject(Project project) {
@@ -54,19 +63,10 @@ public class ProjectServiceClass {
 
 	}
 	
-	public ProjectEmployee saveProjEmp(ProjectEmployee project)
+	public Project findProjectByName(String pName)
 	{
-		return projrepo.save(project);
+		return repo.findProjectByName(pName);
 		
-	}
-	
-	public ProjectEmployee findOneProjectEmployee(int eId) {
-		Optional<ProjectEmployee> projectEmpOptional = projrepo.findById(eId);
-		if (projectEmpOptional.isPresent()) {
-			return projectEmpOptional.get();
-		} else {
-			return new ProjectEmployee();
-		}
 	}
 
 }

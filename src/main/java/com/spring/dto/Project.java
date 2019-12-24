@@ -1,12 +1,13 @@
 package com.spring.dto;
 
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "Project")
+@NamedQuery(name = "Project.findProjectByName", query = "SELECT p FROM Project p WHERE p.pName = :pName")
 public class Project {
 
 	@Id
@@ -23,8 +24,6 @@ public class Project {
 		this.pName = pName;
 	}
 
-
-
 	public int getpId() {
 		return pId;
 	}
@@ -39,6 +38,11 @@ public class Project {
 
 	public void setpName(String pName) {
 		this.pName = pName;
+	}
+
+	@Override
+	public String toString() {
+		return "Project [pId=" + pId + ", pName=" + pName + "]";
 	}
 
 }
