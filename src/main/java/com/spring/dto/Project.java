@@ -5,6 +5,10 @@ import javax.persistence.Id;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
+/**
+ * @author Abhishek.Das
+ *
+ */
 @Entity
 @Table(name = "Project")
 @NamedQuery(name = "Project.findProjectByName", query = "SELECT p FROM Project p WHERE p.pName = :pName")
